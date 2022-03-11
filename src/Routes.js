@@ -1,5 +1,3 @@
-import React from "react";
-
 export const baseUrl = 'http://ec2-3-133-114-45.us-east-2.compute.amazonaws.com:8080'
 
 export const paths = {
@@ -9,13 +7,3 @@ export const paths = {
     card: `${baseUrl}/api/card`,
     user_create: `${baseUrl}/api/user/create`
 }
-//
-// ReactDOM.render(
-//     <Router>
-//         <div>
-//             <Route exact path={'/'}>
-//                 <Login/>
-//             </Route>
-//         </div>
-//     </Router>,
-// );

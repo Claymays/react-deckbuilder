@@ -1,19 +1,25 @@
 import React, {useState} from "react";
 import {paths} from '../Routes';
 import {$, set} from '../Shared';
+import {Link} from "react-router-dom";
+import SearchBar from "../components/SearchBar";
 
 function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
+
     return (
         <div>
+            <SearchBar/>
             <input id={"username"} onChange={e => setUsername(e.target.value)} type={"text"} value={username}/>
             <input id={"password"} onChange={e => setPassword(e.target.value)} type={"password"} value={password}/>
-            <button onClick={() => Auth()}>Login</button>
-            <button onClick={() => SignUp()}>Sign Up</button>
+            <Link to='/profile' replace={true}>
+                <button onClick={() => Auth()}>Login</button>
+                <button onClick={() => SignUp()}>Sign Up</button>
+            </Link>
         </div>
-    )
+    );
 }
 
 function Auth() {
