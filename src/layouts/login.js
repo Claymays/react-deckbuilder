@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {paths} from '../Routes';
+import {paths, testPaths} from '../Routes';
 import {$, set} from '../Shared';
 import {Link} from "react-router-dom";
 import SearchBar from "../components/SearchBar";
@@ -28,8 +28,8 @@ async function Auth() {
         password: $('password').value
     }
 
-    const url = 'http://ec2-3-133-114-45.us-east-2.compute.amazonaws.com:8080/api/user/login';
-    await fetch(url, {
+
+    await fetch(testPaths.login, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -45,13 +45,13 @@ async function Auth() {
         })
 }
 
-function SignUp() {
+async function SignUp() {
     let params = {
         username: $('username').value,
         password: $('password').value
     }
 
-    fetch(paths.user_create, {
+    await fetch(paths.user_create, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(params),
