@@ -14,21 +14,22 @@ function Login() {
             <SearchBar/>
             <input id={"username"} onChange={e => setUsername(e.target.value)} type={"text"} value={username}/>
             <input id={"password"} onChange={e => setPassword(e.target.value)} type={"password"} value={password}/>
-            <Link to='/profile' replace={true}>
-                <button onClick={() => Auth()}>Login</button>
+            <button onClick={() => Auth()}>Login</button>
+            <Link to="/profile" replace={true}>
                 <button onClick={() => SignUp()}>Sign Up</button>
             </Link>
         </div>
     );
 }
 
-function Auth() {
+async function Auth() {
     let params = {
         username: $('username').value,
         password: $('password').value
     }
 
-    fetch(paths.login, {
+    const url = 'http://ec2-3-133-114-45.us-east-2.compute.amazonaws.com:8080/api/user/login';
+    await fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -39,7 +40,8 @@ function Auth() {
             return response.json();
         })
         .then(json => {
-            if (json != null) {set('token', json)}
+            if (json != null) {set('token', json); window.location.href = '/profile'}
+
         })
 }
 

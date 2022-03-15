@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import Main from './layouts/main';
@@ -14,7 +14,7 @@ const routing = (
         <Routes>
             <Route path="/" element={<Main />} />
             <Route path="login" element={<Login />} />
-            <Route path="profile" element={<Profile/>} />
+            <Route path="profile" element={<Profile />} />
         </Routes>
     </Router>
 )
