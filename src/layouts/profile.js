@@ -11,8 +11,28 @@ function Profile() {
 
     function createDeck() {
         const deckName = prompt();
-        const deckContent = prompt();
-        console.log(deckContent);
+        const content = prompt();
+        console.log(content);
+        const body = {
+            'userId': 1,
+            'deckName': deckName,
+            'deckContent': content
+        };
+
+        fetch(testPaths.deck, {
+            headers: {
+                'Authorization': 'bearer' + get('token'),
+                'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify(body)
+        })
+            .then(response => {return response.json()})
+        .then(json => {
+            if (json !== null) {
+                console.log('Success!');
+            }
+        })
     }
 
     useEffect(() => {
