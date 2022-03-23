@@ -15,9 +15,7 @@ function Login() {
             <input id={"username"} onChange={e => setUsername(e.target.value)} type={"text"} value={username}/>
             <input id={"password"} onChange={e => setPassword(e.target.value)} type={"password"} value={password}/>
             <button onClick={() => Auth()}>Login</button>
-            <Link to="/profile" replace={true}>
-                <button onClick={() => SignUp()}>Sign Up</button>
-            </Link>
+            <button onClick={() => SignUp()}>Sign Up</button>
         </div>
     );
 }
@@ -51,7 +49,7 @@ async function SignUp() {
         password: $('password').value
     }
 
-    await fetch(paths.user_create, {
+    await fetch(testPaths.user_create, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(params),
@@ -59,7 +57,7 @@ async function SignUp() {
         .then(response => {
             return response.json()
         })
-        .then((json) => {if (json != null) {set('token', json)}})
+        .then((json) => {if (json != null) {set('token', json); window.location.href = '/profile'}})
 }
 
 export default Login;

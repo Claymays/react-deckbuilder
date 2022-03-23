@@ -7,10 +7,10 @@ import {useEffect, useState} from "react";
 
 function Profile() {
     const [Loading, setLoading] = useState(true);
-    const [Decks, setDecks] = useState([]);
+    const [decks, setDecks] = useState([]);
 
     function createDeck() {
-        const deckName = prompt();
+        const deckName = prompt() || "default";
         const content = prompt();
         console.log(content);
         const body = {
@@ -28,11 +28,9 @@ function Profile() {
             body: JSON.stringify(body)
         })
             .then(response => {return response.json()})
-        .then(json => {
-            if (json !== null) {
-                console.log('Success!');
-            }
-        })
+            .catch(e => {
+                console.log(e);
+            });
     }
 
     useEffect(() => {
@@ -58,13 +56,22 @@ function Profile() {
             </>
         );
     } else {
-        return (
-            <>
-                <SearchBar/>
-                <Deck decks={Decks}/>
-                <button onClick={() => createDeck()}>Create Deck</button>
-            </>
-        );
+        if (decks === []) {
+            return (
+                <>
+                    <SearchBar/>
+                    <button onClick={() => createDeck()}>Create Deck</button>
+                </>
+            );
+        } else {
+            return (
+                <>
+                    <SearchBar/>
+                    <Deck decks={decks}/>
+                    <button onClick={() => createDeck()}>Create Deck</button>
+                </>
+            );
+        }
     }
 }
 
