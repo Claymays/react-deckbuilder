@@ -1,13 +1,13 @@
 import {useState} from "react";
 import {get} from "../Shared.js";
-import {paths} from "../Routes.js";
+import {testPaths} from "../Routes.js";
 
 function SearchBar() {
     const [cardName, setCardName] = useState("");
     const [cardSrc, setCardSrc] = useState("");
 
     function cardSearch() {
-        fetch(paths.card + "?name=" + cardName, {
+        fetch(testPaths.card + "?name=" + cardName, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

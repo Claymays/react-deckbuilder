@@ -1,7 +1,6 @@
 import React, {useState} from "react";
-import {paths, testPaths} from '../Routes';
+import {testPaths} from '../Routes';
 import {$, set} from '../Shared';
-import {Link} from "react-router-dom";
 import SearchBar from "../components/SearchBar";
 
 function Login() {

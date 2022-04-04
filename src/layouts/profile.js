@@ -1,11 +1,12 @@
 import {paths, testPaths} from '../Routes'
-import {get} from '../Shared'
+import {get, fetchUserDetails} from '../Shared'
 import SearchBar from "../components/SearchBar";
 import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
 
 
-function Profile() {
+function Profile(props) {
+    let isMounted = true;
     const [Loading, setLoading] = useState(true);
     const [decks, setDecks] = useState([]);
 
@@ -14,7 +15,6 @@ function Profile() {
         const content = prompt();
         console.log(content);
         const body = {
-            'userId': 1,
             'deckName': deckName,
             'deckContent': content
         };
@@ -28,24 +28,21 @@ function Profile() {
             body: JSON.stringify(body)
         })
             .then(response => {return response.json()})
+            .then((json) => {
+                fetchUserDetails();
+            })
             .catch(e => {
                 console.log(e);
             });
     }
 
     useEffect(() => {
-        let isMounted = true;
-        fetch(testPaths.user, {
-            headers: {
-                'Authorization': 'bearer' + get('token')
-            }, method: 'POST'
-        })
-            .then(response => response.json())
-            .then(data => {
+        fetchUserDetails()
+            .then((data) => {
                 if (isMounted && data.decks !== []) setDecks(data.decks);
             });
         setLoading(false);
-        return () => { isMounted = false};
+        return () => {isMounted = false};
     }, []);
 
     if (Loading) {
@@ -67,7 +64,7 @@ function Profile() {
             return (
                 <>
                     <SearchBar/>
-                    <Deck decks={decks}/>
+                    <Deck decks={decks} onClick={props.onClick}/>
                     <button onClick={() => createDeck()}>Create Deck</button>
                 </>
             );
@@ -80,7 +77,7 @@ function Deck(props) {
         <>
             {props.decks.map((deck) => (
                 <li key={deck.id}>
-                    <Link to="/deck" replace={true} id={deck.id}>
+                    <Link to="/deck" replace={true} id={deck.id} onClick={() => props.onClick(deck.cardsInDeck || [])}>
                         {deck.deckName}
                     </Link>
                 </li>
