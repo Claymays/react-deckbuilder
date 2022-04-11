@@ -1,67 +1,74 @@
 import SearchBar from "../components/SearchBar";
+import {get} from "../Shared";
 
 function Deck(props) {
-    let planeswalkers = document.createElement("div");
-    let creatures = document.createElement("div");
-    let enchantments = document.createElement("div");
-    let artifacts = document.createElement("div");
-    let sorceries = document.createElement("div");
-    let instants = document.createElement("div");
-    let lands = document.createElement("div");
+    let planeswalkers = [];
+    let creatures = [];
+    let enchantments = [];
+    let artifacts = [];
+    let sorceries = [];
+    let instants = [];
+    let lands = [];
 
-    planeswalkers.style.display = "none";
-    creatures.style.display = "none";
-    instants.style.display = "none";
-    sorceries.style.display = "none";
-    artifacts.style.display = "none";
-    enchantments.style.display = "none";
-    lands.style.display = "none";
+    let deck = JSON.parse(get('deck'));
+
+    deck.cardsInDeck.map((card) => (
+       loadCard(card)
+    ));
 
     function loadCard(card) {
+        let cardContainer = <img src={card.pngUri} alt={card.name}/>
         if (card.typeLine.includes("Creature")) {
-            let cardContainer = document.createElement("img");
-            cardContainer.src = card.pngUri;
-            creatures.append(cardContainer);
-            creatures.style.display = "inline";
+            creatures.push(cardContainer);
         } else if (card.typeLine.includes("Planeswalker")) {
-            let cardContainer = document.createElement("img");
-            cardContainer.src = card.pngUri;
-            planeswalkers.append(cardContainer);
-            planeswalkers.style.display = "inline";
+            planeswalkers.push(cardContainer);
         } else if (card.typeLine.includes("Sorcery")) {
-            let cardContainer = document.createElement("img");
-            cardContainer.src = card.pngUri;
-            sorceries.append(cardContainer);
-            sorceries.style.display = "inline";
+            sorceries.push(cardContainer);
         } else if (card.typeLine.includes("Land")) {
-            let cardContainer = document.createElement("img");
-            cardContainer.src = card.pngUri;
-            lands.append(cardContainer);
-            lands.style.display = "inline";
+            lands.push(cardContainer);
         } else if (card.typeLine.includes("Artifact")) {
-            let cardContainer = document.createElement("img");
-            cardContainer.src = card.pngUri;
-            artifacts.append(cardContainer);
-            artifacts.style.display = "inline";
+            artifacts.push(cardContainer);
         } else if (card.typeLine.includes("Enchantment")) {
-            let cardContainer = document.createElement("img");
-            cardContainer.src = card.pngUri;
-            enchantments.append(cardContainer);
-            enchantments.style.display = "inline";
+            enchantments.push(cardContainer);
         } else if (card.typeLine.includes("Instant")) {
-            let cardContainer = document.createElement("img");
-            cardContainer.src = card.pngUri;
-            instants.append(cardContainer);
-            instants.style.display = "inline";
+            instants.push(cardContainer);
         }
     }
 
+
     return (
         <>
-            <SearchBar/>
-
+            <SearchBar deck={deck.id}/>
+            <div style={{fontSize: "large"}}>
+                Creatures:
+                {creatures}
+            </div>
+            <div style={{fontSize: "large"}}>
+                Planeswalkers:
+                {planeswalkers}
+            </div>
+            <div style={{fontSize: "large"}}>
+                Instants:
+                {instants}
+            </div>
+            <div style={{fontSize: "large"}}>
+                Sorceries:
+                {sorceries}
+            </div>
+            <div style={{fontSize: "large"}}>
+                Lands:
+                {lands}
+            </div>
+            <div style={{fontSize: "large"}}>
+                Enchantments:
+                {enchantments}
+            </div>
+            <div style={{fontSize: "large"}}>
+                Artifacts:
+                {artifacts}
+            </div>
         </>
-    )
+    );
 }
 
 export default Deck
