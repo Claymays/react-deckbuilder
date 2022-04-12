@@ -2,7 +2,7 @@ import {useState} from "react";
 import {get} from "../Shared.js";
 import {testPaths} from "../Routes.js";
 import {set} from "../Shared";
-import deck from "../layouts/deck";
+import "../App.css"
 
 function SearchBar(props) {
     const [cardName, setCardName] = useState("");
@@ -41,12 +41,14 @@ function SearchBar(props) {
                 let deck = JSON.parse(get('deck'));
                 deck.cardsInDeck.push(card);
                 set('deck', JSON.stringify(deck));
+                console.log(card);
+                props.onClick(card);
         })
     }
 
     if (cardSrc === "") {
         return (
-            <div>
+            <div className={"searchHeader"}>
                 <input id={'searchBar'} type="text" onChange={e => setCardName(e.target.value)} value={cardName}/>
                 <button type={"submit"} onClick={cardSearch}>Search</button>
                 <img src={cardSrc} style={{display: "none"}} alt={""}/>
@@ -54,7 +56,7 @@ function SearchBar(props) {
         );
     } else {
         return (
-            <div>
+            <div className={"searchHeader"}>
                 <input id={'searchBar'} type="text" onChange={e => setCardName(e.target.value)} value={cardName}/>
                 <button type={"submit"} onClick={cardSearch}>Search</button>
                 <img src={cardSrc} alt={cardName}/>

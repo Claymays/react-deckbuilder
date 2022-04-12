@@ -1,0 +1,21 @@
+img {
+    width: 215px;
+    height: 290px;
+}
+
+.typeContainer {
+    display: flex;
+    flex-direction: column;
+    flex: auto;
+    width: 33%;
+}
+
+.flexContainer {
+    display: flex;
+    flex-flow: row wrap;
+    align-content: flex-start;
+}
+
+.searchHeader {
+    align-content: center;
+}

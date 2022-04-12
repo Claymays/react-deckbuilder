@@ -1,5 +1,6 @@
 import SearchBar from "../components/SearchBar";
 import {get} from "../Shared";
+import "../App.css";
 
 function Deck(props) {
     let planeswalkers = [];
@@ -35,37 +36,39 @@ function Deck(props) {
         }
     }
 
-
     return (
         <>
-            <SearchBar deck={deck.id}/>
-            <div style={{fontSize: "large"}}>
-                Creatures:
-                {creatures}
-            </div>
-            <div style={{fontSize: "large"}}>
-                Planeswalkers:
-                {planeswalkers}
-            </div>
-            <div style={{fontSize: "large"}}>
-                Instants:
-                {instants}
-            </div>
-            <div style={{fontSize: "large"}}>
-                Sorceries:
-                {sorceries}
-            </div>
-            <div style={{fontSize: "large"}}>
-                Lands:
-                {lands}
-            </div>
-            <div style={{fontSize: "large"}}>
-                Enchantments:
-                {enchantments}
-            </div>
-            <div style={{fontSize: "large"}}>
-                Artifacts:
-                {artifacts}
+            <SearchBar deck={deck.id} onClick={(card) => loadCard(card)}/>
+            <div className={"flexContainer"}>
+
+                <div className={"typeContainer"}>
+                    Creatures:
+                    {creatures}
+                </div>
+                <div  className={"typeContainer"}>
+                    Planeswalkers:
+                    {planeswalkers}
+                </div>
+                <div  className={"typeContainer"}>
+                    Instants:
+                    {instants}
+                </div>
+                <div  className={"typeContainer"}>
+                    Sorceries:
+                    {sorceries}
+                </div>
+                <div  className={"typeContainer"}>
+                    Lands:
+                    {lands}
+                </div>
+                <div  className={"typeContainer"}>
+                    Enchantments:
+                    {enchantments}
+                </div>
+                <div  className={"typeContainer"}>
+                    Artifacts:
+                    {artifacts}
+                </div>
             </div>
         </>
     );
