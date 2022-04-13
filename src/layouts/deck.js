@@ -1,9 +1,10 @@
 import SearchBar from "../components/SearchBar";
 import {get} from "../Shared";
 import "../App.css";
+import {useEffect, useState} from "react";
 
 function Deck(props) {
-    let planeswalkers = [];
+    let [planeswalkers, setPlaneswalkers] = useState([]);
     let creatures = [];
     let enchantments = [];
     let artifacts = [];
@@ -14,7 +15,7 @@ function Deck(props) {
     let deck = JSON.parse(get('deck'));
 
     deck.cardsInDeck.map((card) => (
-       loadCard(card)
+        loadCard(card)
     ));
 
     function loadCard(card) {
@@ -38,7 +39,7 @@ function Deck(props) {
 
     return (
         <>
-            <SearchBar deck={deck.id} onClick={(card) => loadCard(card)}/>
+            <SearchBar deck={deck.id} addCard={(card) => loadCard(card)}/>
             <div className={"flexContainer"}>
 
                 <div className={"typeContainer"}>

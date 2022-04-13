@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import Main from './layouts/main';
@@ -6,8 +6,6 @@ import {BrowserRouter as Router, Route} from "react-router-dom";
 import Login from "./layouts/login";
 import Profile from "./layouts/profile";
 import Deck from "./layouts/deck";
-import {set} from "./Shared";
-
 
 const Routes = require("react-router-dom").Routes;
 

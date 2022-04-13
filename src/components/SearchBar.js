@@ -42,7 +42,7 @@ function SearchBar(props) {
                 deck.cardsInDeck.push(card);
                 set('deck', JSON.stringify(deck));
                 console.log(card);
-                props.onClick(card);
+                props.addCard(card);
         })
     }
 
