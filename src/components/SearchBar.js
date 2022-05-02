@@ -54,7 +54,7 @@ function SearchBar(props) {
                 <img src={cardSrc} style={{display: "none"}} alt={""}/>
             </div>
         );
-    } else {
+    } else  if (props.deck !== undefined) {
         return (
             <div className={"searchHeader"}>
                 <input id={'searchBar'} type="text" onChange={e => setCardName(e.target.value)} value={cardName}/>
@@ -63,6 +63,14 @@ function SearchBar(props) {
                 <button type={"submit"} onClick={addCardToDeck}>+</button>
             </div>
         );
+    } else {
+        return (
+            <div className={"searchHeader"}>
+                <input id={'searchBar'} type="text" onChange={e => setCardName(e.target.value)} value={cardName}/>
+                <button type={"submit"} onClick={cardSearch}>Search</button>
+                <img src={cardSrc} alt={cardName}/>
+            </div>
+        )
     }
 }
 

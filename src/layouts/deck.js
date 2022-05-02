@@ -5,35 +5,113 @@ import {useEffect, useState} from "react";
 
 function Deck(props) {
     let [planeswalkers, setPlaneswalkers] = useState([]);
-    let creatures = [];
-    let enchantments = [];
-    let artifacts = [];
-    let sorceries = [];
-    let instants = [];
-    let lands = [];
+    let [creatures, setCreatures] = useState([]);
+    let [enchantments, setEnchantments] = useState([]);
+    let [artifacts, setArtifacts] = useState([]);
+    let [sorceries, setSorceries] = useState([]);
+    let [instants, setInstants] = useState([]);
+    let [lands, setLands] = useState([]);
+    let cardContainer;
 
     let deck = JSON.parse(get('deck'));
 
-    deck.cardsInDeck.map((card) => (
-        loadCard(card)
-    ));
+    useEffect(() => {
+        deck.cardsInDeck.map((card) => {
+            cardContainer = <img src={card.pngUri} alt={card.name}/>
+
+            if (card.typeLine.includes("Creature")) {
+                setCreatures(prevState => {
+                    let newState = [...prevState];
+                    newState.push(cardContainer);
+                    return newState;
+                });
+            } else if (card.typeLine.includes("Planeswalker")) {
+                console.log(card.name);
+                setPlaneswalkers(prevState => {
+                    let newState = [...prevState];
+                    newState.push(cardContainer);
+                    return newState;
+                });
+            } else if (card.typeLine.includes("Sorcery")) {
+                setSorceries(prevState => {
+                    let newState = [...prevState];
+                    newState.push(cardContainer);
+                    return newState;
+                });
+            } else if (card.typeLine.includes("Land")) {
+                setLands(prevState => {
+                    let newState = [...prevState];
+                    newState.push(cardContainer);
+                    return newState;
+                });
+            } else if (card.typeLine.includes("Artifact")) {
+                setArtifacts(prevState => {
+                    let newState = [...prevState];
+                    newState.push(cardContainer);
+                    return newState;
+                });
+            } else if (card.typeLine.includes("Enchantment")) {
+                setEnchantments(prevState => {
+                    let newState = [...prevState];
+                    newState.push(cardContainer);
+                    return newState;
+                });
+            } else if (card.typeLine.includes("Instant")) {
+                setInstants(prevState => {
+                    let newState = [...prevState];
+                    newState.push(cardContainer);
+                    return newState;
+                });
+            }
+            })
+    }, []);
 
     function loadCard(card) {
-        let cardContainer = <img src={card.pngUri} alt={card.name}/>
+        cardContainer = <img src={card.pngUri} alt={card.name}/>
+
         if (card.typeLine.includes("Creature")) {
-            creatures.push(cardContainer);
+            setCreatures(prevState => {
+                let newState = [...prevState];
+                newState.push(cardContainer);
+                return newState;
+            });
         } else if (card.typeLine.includes("Planeswalker")) {
-            planeswalkers.push(cardContainer);
+            console.log(card.name);
+            setPlaneswalkers(prevState => {
+                let newState = [...prevState];
+                newState.push(cardContainer);
+                return newState;
+            });
         } else if (card.typeLine.includes("Sorcery")) {
-            sorceries.push(cardContainer);
+            setSorceries(prevState => {
+                let newState = [...prevState];
+                newState.push(cardContainer);
+                return newState;
+            });
         } else if (card.typeLine.includes("Land")) {
-            lands.push(cardContainer);
+            setLands(prevState => {
+                let newState = [...prevState];
+                newState.push(cardContainer);
+                return newState;
+            });
         } else if (card.typeLine.includes("Artifact")) {
-            artifacts.push(cardContainer);
+            setArtifacts(prevState => {
+                let newState = [...prevState];
+                newState.push(cardContainer);
+                return newState;
+            });
         } else if (card.typeLine.includes("Enchantment")) {
-            enchantments.push(cardContainer);
+            setEnchantments(prevState => {
+                let newState = [...prevState];
+                newState.push(cardContainer);
+                return newState;
+            });
         } else if (card.typeLine.includes("Instant")) {
-            instants.push(cardContainer);
+            setInstants(prevState => {
+                let newState = [...prevState];
+                newState.push(cardContainer);
+                return newState;
+            });
         }
     }
 
@@ -48,7 +126,7 @@ function Deck(props) {
                 </div>
                 <div  className={"typeContainer"}>
                     Planeswalkers:
-                    {planeswalkers}
+                    <Planeswalkers planeswalkers={planeswalkers}/>
                 </div>
                 <div  className={"typeContainer"}>
                     Instants:
@@ -75,4 +153,11 @@ function Deck(props) {
     );
 }
 
+function Planeswalkers(props) {
+    return (
+        <>
+            {props.planeswalkers}
+        </>
+    )
+}
 export default Deck
