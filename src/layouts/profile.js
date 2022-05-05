@@ -31,6 +31,11 @@ function Profile() {
             .then(response => {return response.json()})
             .then((json) => {
                 fetchUserDetails();
+                setDecks(prevState => {
+                    let newState = [...prevState];
+                    newState.push(json);
+                    return newState;
+                })
             })
             .catch(e => {
                 console.log(e);

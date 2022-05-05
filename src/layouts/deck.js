@@ -2,6 +2,7 @@ import SearchBar from "../components/SearchBar";
 import {get} from "../Shared";
 import "../App.css";
 import {useEffect, useState} from "react";
+import {testPaths} from "../Routes";
 
 function Deck(props) {
     let [planeswalkers, setPlaneswalkers] = useState([]);
@@ -11,63 +12,59 @@ function Deck(props) {
     let [sorceries, setSorceries] = useState([]);
     let [instants, setInstants] = useState([]);
     let [lands, setLands] = useState([]);
-    let cardContainer;
+    let [cardCount, setCardCount] = useState([]);
 
     let deck = JSON.parse(get('deck'));
 
+    // filteredDeck.some(object => {
+    //     if (object.key === card.name) {
+    //         console.log(object.name + " " + card.name);
+    //         return true;
+    //     } else {
+    //         console.log(object.name + " " + card.name);
+    //         return false
+    //     }
+    // })
     useEffect(() => {
         deck.cardsInDeck.map((card) => {
-            cardContainer = <img src={card.pngUri} alt={card.name}/>
+            if (cardCount.includes(e => {
+                return e.name === card.name
+            })) {
+                setCardCount(prevState => {
+                    let oldCard = cardCount.find((e) => {return e.name === card.name;});
+                    let newCard = [{name: card.name, quantity: oldCard.quantity + 1}]
+                    let index = cardCount.findIndex(object => {
+                        return object.name === card.name;
+                    });
+                    let newCount = prevState.splice(index, index);
+                    newCount.push(newCard);
+                    return newCount;
+                })
+            } else {
+            setCardCount(prevState => { return [...prevState, { name: card.name, quantity: 1}];});
+
+            let cardContainer = <img src={card.pngUri} alt={card.name}/>;
 
             if (card.typeLine.includes("Creature")) {
-                setCreatures(prevState => {
-                    let newState = [...prevState];
-                    newState.push(cardContainer);
-                    return newState;
-                });
+                setCreatures(prevState => { return [...prevState, cardContainer]} );
             } else if (card.typeLine.includes("Planeswalker")) {
-                console.log(card.name);
-                setPlaneswalkers(prevState => {
-                    let newState = [...prevState];
-                    newState.push(cardContainer);
-                    return newState;
-                });
+                setPlaneswalkers(prevState => { return [...prevState, cardContainer]} );
             } else if (card.typeLine.includes("Sorcery")) {
-                setSorceries(prevState => {
-                    let newState = [...prevState];
-                    newState.push(cardContainer);
-                    return newState;
-                });
+                setSorceries(prevState => { return [...prevState, cardContainer]} );
             } else if (card.typeLine.includes("Land")) {
-                setLands(prevState => {
-                    let newState = [...prevState];
-                    newState.push(cardContainer);
-                    return newState;
-                });
+                setLands(prevState => { return [...prevState, cardContainer]} );
             } else if (card.typeLine.includes("Artifact")) {
-                setArtifacts(prevState => {
-                    let newState = [...prevState];
-                    newState.push(cardContainer);
-                    return newState;
-                });
+                setArtifacts(prevState => { return [...prevState, cardContainer]} );
             } else if (card.typeLine.includes("Enchantment")) {
-                setEnchantments(prevState => {
-                    let newState = [...prevState];
-                    newState.push(cardContainer);
-                    return newState;
-                });
+                setEnchantments(prevState => { return [...prevState, cardContainer]} );
             } else if (card.typeLine.includes("Instant")) {
-                setInstants(prevState => {
-                    let newState = [...prevState];
-                    newState.push(cardContainer);
-                    return newState;
-                });
-            }
-            })
+                setInstants(prevState => { return [...prevState, cardContainer]} );
+            }}})
+        console.log(cardCount[1])
     }, []);
 
     function loadCard(card) {
-        cardContainer = <img src={card.pngUri} alt={card.name}/>
+        let cardContainer = <img src={card.pngUri} alt={card.name}/>
 
         if (card.typeLine.includes("Creature")) {
             setCreatures(prevState => {
@@ -115,9 +112,26 @@ function Deck(props) {
         }
     }
 
+    function deleteDeck() {
+        fetch(testPaths.deck + deck.id, {
+            headers: {
+                Authorization: 'bearer' + get('token'),
+
+            }, method: 'DELETE',
+        })
+            .then(() => {
+                window.location.href = "/profile";
+            })
+            .catch(e => {
+                console.log(e);
+        })
+
+    }
+
     return (
         <>
             <SearchBar deck={deck.id} addCard={(card) => loadCard(card)}/>
+            <button onClick={() => {deleteDeck()}}>Delete Deck</button>
             <div className={"flexContainer"}>
 
                 <div className={"typeContainer"}>
