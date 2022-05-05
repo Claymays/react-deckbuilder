@@ -21,3 +21,4 @@ export async function fetchUserDetails() {
         .then(response => {return response.json()});
     return user;
 }
+

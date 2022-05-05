@@ -13,22 +13,14 @@ function Deck(props) {
     let [instants, setInstants] = useState([]);
     let [lands, setLands] = useState([]);
     let [cardCount, setCardCount] = useState([]);
+    let count = 0;
 
     let deck = JSON.parse(get('deck'));
 
-    // filteredDeck.some(object => {
-    //     if (object.key === card.name) {
-    //         console.log(object.name + " " + card.name);
-    //         return true;
-    //     } else {
-    //         console.log(object.name + " " + card.name);
-    //         return false
-    //     }
-    // })
     useEffect(() => {
         deck.cardsInDeck.map((card) => {
-            if (cardCount.includes(e => {
-                return e.name === card.name
+            if (cardCount.some(e => {
+                return e.name === card.name;
             })) {
                 setCardCount(prevState => {
                     let oldCard = cardCount.find((e) => {return e.name === card.name;});
@@ -36,13 +28,16 @@ function Deck(props) {
                     let index = cardCount.findIndex(object => {
                         return object.name === card.name;
                     });
-                    let newCount = prevState.splice(index, index);
+                    let newCount = prevState.slice(index, index);
                     newCount.push(newCard);
                     return newCount;
                 })
             } else {
-            setCardCount(prevState => { return [...prevState, { name: card.name, quantity: 1}];});
-
+            setCardCount(prevState => {
+                return ([...prevState,
+                    { name: card.name, quantity: 1}]);
+            });
+            console.log(card.name);
             let cardContainer = <img src={card.pngUri} alt={card.name}/>;
 
             if (card.typeLine.includes("Creature")) {
@@ -59,12 +54,15 @@ function Deck(props) {
                 setEnchantments(prevState => { return [...prevState, cardContainer]} );
             } else if (card.typeLine.includes("Instant")) {
                 setInstants(prevState => { return [...prevState, cardContainer]} );
-            }}})
-        console.log(cardCount[1])
+            }
+            console.log(count);
+            console.log(cardCount[count]);
+            count += 1;
+            }})
     }, []);
 
     function loadCard(card) {
-        let cardContainer = <img src={card.pngUri} alt={card.name}/>
+        let cardContainer = <img key={card.name} src={card.pngUri} alt={card.name}/>
 
         if (card.typeLine.includes("Creature")) {
             setCreatures(prevState => {
