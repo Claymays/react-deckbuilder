@@ -12,8 +12,7 @@ function Deck(props) {
     let [sorceries, setSorceries] = useState([]);
     let [instants, setInstants] = useState([]);
     let [lands, setLands] = useState([]);
-    let [cardCount, setCardCount] = useState([]);
-    let count = 0;
+    let cardCount = [];
 
     let deck = JSON.parse(get('deck'));
 
@@ -22,23 +21,20 @@ function Deck(props) {
             if (cardCount.some(e => {
                 return e.name === card.name;
             })) {
-                setCardCount(prevState => {
-                    let oldCard = cardCount.find((e) => {return e.name === card.name;});
-                    let newCard = [{name: card.name, quantity: oldCard.quantity + 1}]
-                    let index = cardCount.findIndex(object => {
-                        return object.name === card.name;
-                    });
-                    let newCount = prevState.slice(index, index);
-                    newCount.push(newCard);
-                    return newCount;
-                })
+                let oldCard = cardCount.find((e) => {return e.name === card.name;});
+                let newCard = {name: card.name, quantity: oldCard.quantity + 1};
+                let index = cardCount.findIndex(e => {
+                    return e.name === card.name;
+                });
+                if (cardCount.length === 1) {
+                    cardCount.pop();
+                } else {
+                    cardCount.splice(index, index);
+                }
+                cardCount.push(newCard);
             } else {
-            setCardCount(prevState => {
-                return ([...prevState,
-                    { name: card.name, quantity: 1}]);
-            });
-            console.log(card.name);
-            let cardContainer = <img src={card.pngUri} alt={card.name}/>;
+            cardCount.push({name: card.name, quantity: 1})
+            let cardContainer = <img key={card.name} src={card.pngUri} alt={card.name}/>;
 
             if (card.typeLine.includes("Creature")) {
                 setCreatures(prevState => { return [...prevState, cardContainer]} );
@@ -55,10 +51,8 @@ function Deck(props) {
             } else if (card.typeLine.includes("Instant")) {
                 setInstants(prevState => { return [...prevState, cardContainer]} );
             }
-            console.log(count);
-            console.log(cardCount[count]);
-            count += 1;
             }})
+        console.log(cardCount);
     }, []);
 
     function loadCard(card) {
@@ -114,7 +108,6 @@ function Deck(props) {
         fetch(testPaths.deck + deck.id, {
             headers: {
                 Authorization: 'bearer' + get('token'),
-
             }, method: 'DELETE',
         })
             .then(() => {
@@ -138,7 +131,7 @@ function Deck(props) {
                 </div>
                 <div  className={"typeContainer"}>
                     Planeswalkers:
-                    <Planeswalkers planeswalkers={planeswalkers}/>
+                    {planeswalkers}
                 </div>
                 <div  className={"typeContainer"}>
                     Instants:
@@ -163,13 +156,5 @@ function Deck(props) {
             </div>
         </>
     );
-}
-
-function Planeswalkers(props) {
-    return (
-        <>
-            {props.planeswalkers}
-        </>
-    )
 }
 export default Deck
