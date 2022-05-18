@@ -132,10 +132,10 @@ function Deck() {
     return (
         <>
             <SearchBar deck={deck.id} addCard={(card) => loadCard(card)}/>
-            <button onClick={() => {
-                deleteDeck()
-            }}>Delete Deck
+            <button onClick={() => {deleteDeck()}}>
+                Delete Deck
             </button>
+
             <div className={"flexContainer"}>
 
                 <div className={"typeContainer"}>
