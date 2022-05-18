@@ -79,7 +79,7 @@ function Deck(props) {
         <>
             {props.decks.map((deck) => (
                 <li key={deck.id}>
-                    <Link to="/deck" replace={true} id={deck.id} onClick={() => set('deck', JSON.stringify(deck))}>
+                    <Link to={`/deck/${deck.id}`} replace={true} id={deck.id} onClick={() => set('deck', JSON.stringify(deck))}>
                         {deck.deckName}
                     </Link>
                 </li>
