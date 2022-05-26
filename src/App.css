@@ -3,17 +3,40 @@ img {
     height: 290px;
 }
 
+.cardContainer {
+    width: 215px;
+    height: 290px;
+    margin-bottom: -99%;
+    transition: margin-bottom 0.5s;
+    position: relative;
+}
+.cardContainer:hover {
+    margin-bottom: 10%;
+}
+
+.buttonContainer {
+    display: flex;
+    opacity: .7;
+    height: 7%;
+}
+
+.quantityControlButtons {
+    width: 50%;
+    z-index: 2;
+    justify-content: center;
+}
+
 .typeContainer {
     display: flex;
     flex-direction: column;
     flex: auto;
-    width: 33%;
+    margin-bottom: 20%;
+    margin-right: 3%;
 }
 
 .flexContainer {
     display: flex;
     flex-flow: row wrap;
-    align-content: flex-start;
 }
 
 .searchHeader {

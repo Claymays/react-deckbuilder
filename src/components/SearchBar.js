@@ -4,6 +4,8 @@ import {testPaths} from "../Routes.js";
 import {set} from "../Shared";
 import "../App.css"
 
+export function addCardToDeck(){}
+
 function SearchBar(props) {
     const [cardName, setCardName] = useState("");
     const [cardSrc, setCardSrc] = useState("");
@@ -21,37 +23,13 @@ function SearchBar(props) {
             .then(card => {setCardSrc(card.pngUri)})
     }
 
-    function addCardToDeck() {
-        let params = {
-            cardName: cardName,
-            deckId: props.deck,
-        };
 
-        fetch(testPaths.card, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'bearer' + get('token'),
-                'Access-Control-Allow-Credentials': true,
-            }, body: JSON.stringify(params)
-        })
-            .then((response) => {
-                return response.json();
-            }).then((card) => {
-                let deck = JSON.parse(get('deck'));
-                deck.cardsInDeck.push(card);
-                set('deck', JSON.stringify(deck));
-                console.log(card);
-                props.addCard(card);
-        })
-    }
 
     if (cardSrc === "") {
         return (
             <div className={"searchHeader"}>
                 <input id={'searchBar'} type="text" onChange={e => setCardName(e.target.value)} value={cardName}/>
                 <button type={"submit"} onClick={cardSearch}>Search</button>
-                <img src={cardSrc} style={{display: "none"}} alt={""}/>
             </div>
         );
     } else  if (props.deck !== undefined) {

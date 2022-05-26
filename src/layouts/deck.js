@@ -1,8 +1,10 @@
 import SearchBar from "../components/SearchBar";
-import {get} from "../Shared";
+import {get, set} from "../Shared";
 import "../App.css";
 import {useEffect, useState} from "react";
 import {testPaths} from "../Routes";
+import Card from "../components/Card";
+import {addCardToDeck} from "../components/SearchBar";
 
 function Deck() {
     let [planeswalkers, setPlaneswalkers] = useState([]);
@@ -105,7 +107,14 @@ function Deck() {
                     let quantity = countState.find((e) => {
                         return e.name === card.name;
                     }).quantity;
-                    return <img key={card.name} quantity={quantity} alt={card.name} src={card.pngUri}/>
+                    return <Card
+                        key={card.name}
+                        quantity={quantity}
+                        alt={card.name}
+                        src={card.pngUri}
+                        onAdd={() => {addCardToDeck()}}
+                        onMinus={() => {removeCardFromDeck()}}/>
+
                 } catch (e) {
 
                     console.log(card.name + " " + e);
@@ -127,6 +136,57 @@ function Deck() {
                 console.log(e);
         })
 
+    }
+
+    function addCardToDeck(cardName, quantity) {
+        let params = {
+            cardName: cardName,
+            deckId: deck.id,
+            quantity: quantity
+        };
+
+        fetch(testPaths.card, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'bearer' + get('token'),
+                'Access-Control-Allow-Credentials': true,
+            }, body: JSON.stringify(params)
+        })
+            .then((response) => {
+                return response.json();
+            }).then((card) => {
+            let deck = JSON.parse(get('deck'));
+            for (let i = 0; i < quantity; i++) {
+                deck.cardsInDeck.push(card);
+                loadCard(card);
+            }
+            set('deck', JSON.stringify(deck));
+            console.log(card);
+        })
+    }
+    function removeCardFromDeck(cardName, quantity) {
+        let params = {
+            cardName: cardName,
+            deckId: deck.id,
+            quantity: quantity
+        };
+
+        fetch(testPaths.deck, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'bearer' + get('token'),
+                'Access-Control-Allow-Credentials': true,
+            }, body: JSON.stringify(params)
+        })
+            .then((response) => {
+                return response.json();
+            }).then((newDeck) => {
+                deck = newDeck;
+            set('deck', JSON.stringify(deck));
+            console.log(deck);
+        })
     }
 
     return (
