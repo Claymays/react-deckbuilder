@@ -13,6 +13,7 @@ export const testPaths = {
     login: `${testUrl}/api/user/login`,
     user: `${testUrl}/api/user`,
     deck: `${testUrl}/api/deck/`,
+    deckUpdate: `${testUrl}/api/deck/update`,
     card: `${testUrl}/api/card`,
     user_create: `${testUrl}/api/user/create`
 }

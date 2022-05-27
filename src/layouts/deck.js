@@ -108,12 +108,11 @@ function Deck() {
                         return e.name === card.name;
                     }).quantity;
                     return <Card
-                        key={card.name}
+                        name={card.name}
                         quantity={quantity}
                         alt={card.name}
                         src={card.pngUri}
-                        onAdd={() => {addCardToDeck()}}
-                        onMinus={() => {removeCardFromDeck()}}/>
+                        update={addCardToDeck}/>
 
                 } catch (e) {
 
@@ -138,14 +137,14 @@ function Deck() {
 
     }
 
-    function addCardToDeck(cardName, quantity) {
+    const addCardToDeck = (cardName, quantity) => {
         let params = {
             cardName: cardName,
             deckId: deck.id,
             quantity: quantity
         };
 
-        fetch(testPaths.card, {
+        fetch(testPaths.deckUpdate, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -156,36 +155,7 @@ function Deck() {
             .then((response) => {
                 return response.json();
             }).then((card) => {
-            let deck = JSON.parse(get('deck'));
-            for (let i = 0; i < quantity; i++) {
-                deck.cardsInDeck.push(card);
-                loadCard(card);
-            }
-            set('deck', JSON.stringify(deck));
             console.log(card);
-        })
-    }
-    function removeCardFromDeck(cardName, quantity) {
-        let params = {
-            cardName: cardName,
-            deckId: deck.id,
-            quantity: quantity
-        };
-
-        fetch(testPaths.deck, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'bearer' + get('token'),
-                'Access-Control-Allow-Credentials': true,
-            }, body: JSON.stringify(params)
-        })
-            .then((response) => {
-                return response.json();
-            }).then((newDeck) => {
-                deck = newDeck;
-            set('deck', JSON.stringify(deck));
-            console.log(deck);
         })
     }
 
