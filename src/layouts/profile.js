@@ -6,7 +6,7 @@ import {useEffect, useState} from "react";
 import {set} from "../Shared";
 
 
-function Profile() {
+function Profile(props) {
     let isMounted = true;
     const [Loading, setLoading] = useState(true);
     const [decks, setDecks] = useState([]);
@@ -66,7 +66,7 @@ function Profile() {
             return (
                 <>
                     <SearchBar/>
-                    <Deck decks={decks}/>
+                    <Deck decks={decks} selectDeck={props.update}/>
                     <button onClick={() => createDeck()}>Create Deck</button>
                 </>
             );
@@ -79,7 +79,7 @@ function Deck(props) {
         <>
             {props.decks.map((deck) => (
                 <li key={deck.id}>
-                    <Link to={`/deck/${deck.id}`} replace={true} id={deck.id} onClick={() => set('deck', JSON.stringify(deck))}>
+                    <Link to={`/deck/${deck.id}`} replace={true} id={deck.id} onClick={() => props.selectDeck(deck)}>
                         {deck.deckName}
                     </Link>
                 </li>

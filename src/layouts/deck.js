@@ -4,20 +4,19 @@ import "../App.css";
 import {useEffect, useState} from "react";
 import {testPaths} from "../Routes";
 import Card from "../components/Card";
-import {addCardToDeck} from "../components/SearchBar";
 
-function Deck() {
-    let [planeswalkers, setPlaneswalkers] = useState([]);
-    let [creatures, setCreatures] = useState([]);
-    let [enchantments, setEnchantments] = useState([]);
-    let [artifacts, setArtifacts] = useState([]);
-    let [sorceries, setSorceries] = useState([]);
-    let [instants, setInstants] = useState([]);
-    let [lands, setLands] = useState([]);
-    let cardCount = [];
-    let [countState, setCountState] = useState([]);
+function Deck(props) {
+    const [planeswalkers, setPlaneswalkers] = useState([]);
+    const [creatures, setCreatures] = useState([]);
+    const [enchantments, setEnchantments] = useState([]);
+    const [artifacts, setArtifacts] = useState([]);
+    const [sorceries, setSorceries] = useState([]);
+    const [instants, setInstants] = useState([]);
+    const [lands, setLands] = useState([]);
+    const cardCount = [];
+    const [countState, setCountState] = useState([]);
 
-    let deck = JSON.parse(get('deck'));
+    const [deck, setDeck] = useState(props.deck);
 
     useEffect(() => {
         deck.cardsInDeck.map((card) => {
@@ -43,7 +42,7 @@ function Deck() {
     })
         setCountState(cardCount);
         console.log(cardCount);
-    }, []);
+    }, [deck]);
 
     function loadCard(card) {
         if (countState.some(e => {
@@ -67,7 +66,7 @@ function Deck() {
             sortCardByType(card);
         }
     }
-    
+
     function sortCardByType(card) {
         if (card.typeLine.includes("Creature")) {
             setCreatures(prevState => {
@@ -99,7 +98,7 @@ function Deck() {
             });
         }
     }
-    
+
     const CardTypeContainer = ( props ) => {
         return (
             props.cards.map(card => {
@@ -154,14 +153,15 @@ function Deck() {
         })
             .then((response) => {
                 return response.json();
-            }).then((card) => {
-            console.log(card);
+            }).then((deck) => {
+                setDeck(deck);
+                console.log(deck);
         })
     }
 
     return (
         <>
-            <SearchBar deck={deck.id} addCard={(card) => loadCard(card)}/>
+            <SearchBar deck={props.deck.id} addCard={addCardToDeck}/>
             <button onClick={() => {deleteDeck()}}>
                 Delete Deck
             </button>
@@ -169,31 +169,31 @@ function Deck() {
             <div className={"flexContainer"}>
 
                 <div className={"typeContainer"}>
-                    Creatures:
+                    <h2>Creatures:</h2>
                     <CardTypeContainer cards={creatures}/>
                 </div>
                 <div className={"typeContainer"}>
-                    Planeswalkers:
+                    <h2>Planeswalkers:</h2>
                     <CardTypeContainer cards={planeswalkers}/>
                 </div>
                 <div className={"typeContainer"}>
-                    Instants:
+                    <h2>Instants:</h2>
                     <CardTypeContainer cards={instants}/>
                 </div>
                 <div className={"typeContainer"}>
-                    Sorceries:
+                    <h2>Sorceries:</h2>
                     <CardTypeContainer cards={sorceries}/>
                 </div>
                 <div className={"typeContainer"}>
-                    Lands:
+                    <h2>Lands:</h2>
                     <CardTypeContainer cards={lands}/>
                 </div>
                 <div className={"typeContainer"}>
-                    Enchantments:
+                    <h2>Enchantments:</h2>
                     <CardTypeContainer cards={enchantments}/>
                 </div>
                 <div className={"typeContainer"}>
-                    Artifacts:
+                    <h2>Artifacts:</h2>
                     <CardTypeContainer cards={artifacts}/>
                 </div>
             </div>

@@ -1,10 +1,7 @@
 import {useState} from "react";
 import {get} from "../Shared.js";
 import {testPaths} from "../Routes.js";
-import {set} from "../Shared";
 import "../App.css"
-
-export function addCardToDeck(){}
 
 function SearchBar(props) {
     const [cardName, setCardName] = useState("");
@@ -38,7 +35,7 @@ function SearchBar(props) {
                 <input id={'searchBar'} type="text" onChange={e => setCardName(e.target.value)} value={cardName}/>
                 <button type={"submit"} onClick={cardSearch}>Search</button>
                 <img src={cardSrc} alt={cardName}/>
-                <button type={"submit"} onClick={addCardToDeck}>+</button>
+                <button type={"submit"} onClick={() => { props.addCard(cardName) }}>+</button>
             </div>
         );
     } else {
