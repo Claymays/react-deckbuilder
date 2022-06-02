@@ -1,7 +1,7 @@
 import SearchBar from "../components/SearchBar";
 import {get, set} from "../Shared";
 import "../App.css";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {testPaths} from "../Routes";
 import Card from "../components/Card";
 
@@ -13,35 +13,49 @@ function Deck(props) {
     const [sorceries, setSorceries] = useState([]);
     const [instants, setInstants] = useState([]);
     const [lands, setLands] = useState([]);
-    const cardCount = [];
     const [countState, setCountState] = useState([]);
 
     const [deck, setDeck] = useState(props.deck);
 
     useEffect(() => {
+        setCountState(prevState => {
+            let count = [...prevState];
+            let resetCount = count.map(card => {
+                return {name: card.name, quantity: 0}
+            })
+            return resetCount;
+        })
         deck.cardsInDeck.map((card) => {
-            if (cardCount.some(e => {
-                return e.name === card.name;
-            })) {
-                let oldCard = cardCount.find((e) => {return e.name === card.name;});
-                let newCard = {name: card.name, quantity: oldCard.quantity + 1};
-                let index = cardCount.findIndex(e => {
+            setCountState(prevState => {
+                let cardCount = [...prevState];
+                if (cardCount.some(e => {
                     return e.name === card.name;
-                });
+                })) {
+                    let oldCard = cardCount.find((e) => {
+                        return e.name === card.name;
+                    });
+                    let newCard = {name: card.name, quantity: oldCard.quantity + 1};
+                    let index = cardCount.findIndex(e => {
+                        return e.name === card.name;
+                    });
 
-                if (cardCount.length === 1) {
-                    cardCount.pop();
+                    console.log(newCard, cardCount, index, cardCount[index]);
+                    cardCount.splice(index, 1, newCard);
+
+                    return cardCount;
                 } else {
-                    cardCount.splice(index, index);
+
+                    console.log("new entry: ", card.name, "1");
+
+                    cardCount.push({name: card.name, quantity: 1});
+
+                    sortCardByType(card);
+
+                    return cardCount;
                 }
-                cardCount.push(newCard);
-            } else {
-                cardCount.push({name: card.name, quantity: 1});
-                sortCardByType(card);
-            }
-    })
-        setCountState(cardCount);
-        console.log(cardCount);
+            })
+        })
+        console.log(countState);
     }, [deck]);
 
     function loadCard(card) {
@@ -107,6 +121,7 @@ function Deck(props) {
                         return e.name === card.name;
                     }).quantity;
                     return <Card
+                        key={card.name}
                         name={card.name}
                         quantity={quantity}
                         alt={card.name}
