@@ -3,7 +3,7 @@ import {get, fetchUserDetails} from '../Shared'
 import SearchBar from "../components/SearchBar";
 import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {set} from "../Shared";
+import {Import} from "./deckImportForm";
 
 
 function Profile(props) {
@@ -11,9 +11,7 @@ function Profile(props) {
     const [Loading, setLoading] = useState(true);
     const [decks, setDecks] = useState([]);
 
-    function createDeck() {
-        const deckName = prompt() || "default";
-        const content = prompt();
+    const createDeck = (deckName, content) => {
         console.log(content);
         const body = {
             'deckName': deckName,
@@ -40,8 +38,8 @@ function Profile(props) {
 
     useEffect(() => {
         fetchUserDetails()
-            .then((data) => {
-                if (isMounted && data.decks !== []) setDecks(data.decks);
+            .then((user) => {
+                if (isMounted && user.decks !== []) setDecks(user.decks);
             });
         setLoading(false);
         return () => {isMounted = false};
@@ -66,8 +64,9 @@ function Profile(props) {
             return (
                 <>
                     <SearchBar/>
+                    <Import createDeck={createDeck}/>
                     <Deck decks={decks} selectDeck={props.update}/>
-                    <button onClick={() => createDeck()}>Create Deck</button>
+
                 </>
             );
         }

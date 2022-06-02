@@ -1,4 +1,5 @@
 import {get, set} from "../Shared";
+import SearchBar from "../components/SearchBar";
 
 function Arena(props) {
     let library = new Map();
@@ -13,6 +14,13 @@ function Arena(props) {
         JSON.parse(get('deck')).cardsInDeck.map((card, index) => {
             library.set(index, card);
         });
-
     }
+    return (
+        <>
+            <SearchBar/>
+            <p>HELLO</p>
+        </>
+    );
 }
+
+export default Arena

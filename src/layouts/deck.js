@@ -4,6 +4,7 @@ import "../App.css";
 import {useEffect, useState} from "react";
 import {testPaths} from "../Routes";
 import Card from "../components/Card";
+import {Link} from "react-router-dom";
 
 function Deck(props) {
     const [planeswalkers, setPlaneswalkers] = useState([]);
@@ -151,6 +152,7 @@ function Deck(props) {
             <button onClick={() => {deleteDeck()}}>
                 Delete Deck
             </button>
+            <Link to={"arena"}>Arena</Link>
 
             <div className={"flexContainer"}>
 
