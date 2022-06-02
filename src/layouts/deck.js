@@ -1,7 +1,7 @@
 import SearchBar from "../components/SearchBar";
-import {get, set} from "../Shared";
+import {get} from "../Shared";
 import "../App.css";
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import {testPaths} from "../Routes";
 import Card from "../components/Card";
 
@@ -19,13 +19,12 @@ function Deck(props) {
 
     useEffect(() => {
         setCountState(prevState => {
-            let count = [...prevState];
-            let resetCount = count.map(card => {
+            return prevState.map(card => {
                 return {name: card.name, quantity: 0}
-            })
-            return resetCount;
+            });
         })
-        deck.cardsInDeck.map((card) => {
+
+        deck.cardsInDeck.forEach((card) => {
             setCountState(prevState => {
                 let cardCount = [...prevState];
                 if (cardCount.some(e => {
@@ -39,14 +38,10 @@ function Deck(props) {
                         return e.name === card.name;
                     });
 
-                    console.log(newCard, cardCount, index, cardCount[index]);
                     cardCount.splice(index, 1, newCard);
 
                     return cardCount;
                 } else {
-
-                    console.log("new entry: ", card.name, "1");
-
                     cardCount.push({name: card.name, quantity: 1});
 
                     sortCardByType(card);
@@ -55,31 +50,7 @@ function Deck(props) {
                 }
             })
         })
-        console.log(countState);
     }, [deck]);
-
-    function loadCard(card) {
-        if (countState.some(e => {
-            return e.name === card.name;
-        })) {
-            let oldCard = countState.find((e) => {return e.name === card.name;});
-            let newCard = {name: card.name, quantity: oldCard.quantity + 1};
-            let index = countState.findIndex(e => {
-                return e.name === card.name;
-            });
-
-            if (countState.length === 1) {
-                countState.pop();
-            } else {
-                countState.splice(index, index);
-            }
-            countState.push(newCard);
-            console.log(countState);
-        } else {
-            countState.push({name: card.name, quantity: 1});
-            sortCardByType(card);
-        }
-    }
 
     function sortCardByType(card) {
         if (card.typeLine.includes("Creature")) {

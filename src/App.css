@@ -6,7 +6,7 @@ img {
 .cardContainer {
     width: 215px;
     height: 290px;
-    margin-bottom: -99%;
+    margin-bottom: -94%;
     transition: margin-bottom 0.5s;
     position: relative;
 }
