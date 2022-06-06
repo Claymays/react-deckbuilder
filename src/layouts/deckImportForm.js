@@ -40,7 +40,6 @@ export const Import = (props) => {
                                 setDeckName(e.target.value)
                             }}/>
                         <textarea
-                            type={"text"}
                             key={"deckContent"}
                             style={{width: "100%", height: "80%", marginBottom: "10px"}}
                             onChange={(e) => {

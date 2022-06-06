@@ -19,7 +19,7 @@ function Main() {
 
                         <Route path={`*`} element={<Deck/>} />
                     </Route>
-                    <Route path="arena" element={<Arena/>}/>
+                    <Route path="arena" element={<Arena deck={deck}/>}/>
                 </Routes>
             </Router>
         )

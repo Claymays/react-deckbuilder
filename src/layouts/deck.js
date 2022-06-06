@@ -152,7 +152,9 @@ function Deck(props) {
             <button onClick={() => {deleteDeck()}}>
                 Delete Deck
             </button>
-            <Link to={"arena"}>Arena</Link>
+            <button onClick={() => {
+                window.location.replace("/arena");
+            }}>Arena</button>
 
             <div className={"flexContainer"}>
 
